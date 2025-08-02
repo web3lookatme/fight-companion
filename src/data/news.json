@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "McGregor vs. Poirier 4 in the Works?",
+    "source": "MMA Junkie",
+    "date": "2025-07-28",
+    "summary": "Rumors are swirling about a potential fourth fight between Conor McGregor and Dustin Poirier, with sources suggesting a possible winter showdown.",
+    "image": "/news/mcgregor-poirier.svg"
+  },
+  {
+    "id": 2,
+    "title": "Jones to Defend Heavyweight Title Against Miocic",
+    "source": "ESPN",
+    "date": "2025-07-25",
+    "summary": "The highly anticipated heavyweight title clash between Jon Jones and Stipe Miocic has been officially announced for UFC 300.",
+    "image": "/news/jones-miocic.svg"
+  },
+  {
+    "id": 3,
+    "title": "Canelo Alvarez Announces Next Fight",
+    "source": "Boxing Scene",
+    "date": "2025-07-22",
+    "summary": "Boxing superstar Canelo Alvarez has confirmed his next opponent will be David Benavidez in a super middleweight unification bout.",
+    "image": "/news/canelo-benavidez.svg"
+  }
+]

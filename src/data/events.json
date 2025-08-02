@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "name": "UFC 300: Jones vs. Miocic",
+    "date": "2025-11-15",
+    "location": "Las Vegas, NV",
+    "main_card": [
+      {
+        "match": "Jon Jones vs. Stipe Miocic",
+        "weight_class": "Heavyweight"
+      },
+      {
+        "match": "Alexander Volkanovski vs. Ilia Topuria",
+        "weight_class": "Featherweight"
+      },
+      {
+        "match": "Valentina Shevchenko vs. Alexa Grasso 2",
+        "weight_class": "Women's Flyweight"
+      }
+    ],
+    "image": "/events/ufc300.png"
+  },
+  {
+    "id": 2,
+    "name": "Canelo vs. Benavidez",
+    "date": "2025-09-20",
+    "location": "New York, NY",
+    "main_card": [
+      {
+        "match": "Canelo Alvarez vs. David Benavidez",
+        "weight_class": "Super Middleweight"
+      }
+    ],
+    "image": "/events/canelo-benavidez.svg"
+  }
+]

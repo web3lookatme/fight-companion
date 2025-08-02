@@ -1,0 +1,199 @@
+{
+  "fighters": [
+    {
+      "id": 1,
+      "name": "Conor McGregor",
+      "nickname": "The Notorious",
+      "weight_class": "Lightweight",
+      "nationality": "Irish",
+      "record": { "wins": 22, "losses": 6, "draws": 0 },
+      "stats": { "height": "5'9\"", "weight": "155 lbs", "reach": "74 in", "style": "Striker" },
+      "image": "/fighters/conormcgregor.jpeg",
+      "attributes": [
+        { "skill": "Striking", "value": 95 },
+        { "skill": "Power", "value": 90 },
+        { "skill": "Speed", "value": 88 },
+        { "skill": "Grappling", "value": 70 },
+        { "skill": "Stamina", "value": 80 },
+        { "skill": "Chin", "value": 85 }
+      ],
+      "fight_history": [
+        { "opponent": "Dustin Poirier", "result": "Loss", "event": "UFC 264" },
+        { "opponent": "Dustin Poirier", "result": "Loss", "event": "UFC 257" },
+        { "opponent": "Donald Cerrone", "result": "Win", "event": "UFC 246" },
+        { "opponent": "Khabib Nurmagomedov", "result": "Loss", "event": "UFC 229" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Khabib Nurmagomedov",
+      "nickname": "The Eagle",
+      "weight_class": "Lightweight",
+      "nationality": "Russian",
+      "record": { "wins": 29, "losses": 0, "draws": 0 },
+      "stats": { "height": "5'10\"", "weight": "155 lbs", "reach": "70 in", "style": "Grappler" },
+      "image": "/fighters/khabibnurmagomedov.jpg",
+      "attributes": [
+        { "skill": "Striking", "value": 80 },
+        { "skill": "Power", "value": 85 },
+        { "skill": "Speed", "value": 82 },
+        { "skill": "Grappling", "value": 100 },
+        { "skill": "Stamina", "value": 95 },
+        { "skill": "Chin", "value": 90 }
+      ],
+      "fight_history": [
+        { "opponent": "Justin Gaethje", "result": "Win", "event": "UFC 254" },
+        { "opponent": "Dustin Poirier", "result": "Win", "event": "UFC 242" },
+        { "opponent": "Conor McGregor", "result": "Win", "event": "UFC 229" },
+        { "opponent": "Al Iaquinta", "result": "Win", "event": "UFC 223" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Jon Jones",
+      "nickname": "Bones",
+      "weight_class": "Heavyweight",
+      "nationality": "American",
+      "record": { "wins": 27, "losses": 1, "draws": 0 },
+      "stats": { "height": "6'4\"", "weight": "248 lbs", "reach": "84.5 in", "style": "Well-rounded" },
+      "image": "/fighters/jonjones.jpg",
+      "attributes": [
+        { "skill": "Striking", "value": 92 },
+        { "skill": "Power", "value": 90 },
+        { "skill": "Speed", "value": 85 },
+        { "skill": "Grappling", "value": 96 },
+        { "skill": "Stamina", "value": 92 },
+        { "skill": "Chin", "value": 94 }
+      ],
+      "fight_history": [
+        { "opponent": "Ciryl Gane", "result": "Win", "event": "UFC 285" },
+        { "opponent": "Dominick Reyes", "result": "Win", "event": "UFC 247" },
+        { "opponent": "Thiago Santos", "result": "Win", "event": "UFC 239" },
+        { "opponent": "Anthony Smith", "result": "Win", "event": "UFC 235" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Israel Adesanya",
+      "nickname": "The Last Stylebender",
+      "weight_class": "Middleweight",
+      "nationality": "Nigerian",
+      "record": { "wins": 24, "losses": 3, "draws": 0 },
+      "stats": { "height": "6'4\"", "weight": "185 lbs", "reach": "80 in", "style": "Striker" },
+      "image": "/fighters/adesanya.png",
+      "attributes": [
+        { "skill": "Striking", "value": 98 },
+        { "skill": "Power", "value": 85 },
+        { "skill": "Speed", "value": 92 },
+        { "skill": "Grappling", "value": 78 },
+        { "skill": "Stamina", "value": 90 },
+        { "skill": "Chin", "value": 88 }
+      ],
+      "fight_history": [
+        { "opponent": "Sean Strickland", "result": "Loss", "event": "UFC 293" },
+        { "opponent": "Alex Pereira", "result": "Win", "event": "UFC 287" },
+        { "opponent": "Alex Pereira", "result": "Loss", "event": "UFC 281" },
+        { "opponent": "Jared Cannonier", "result": "Win", "event": "UFC 276" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Alexander Volkanovski",
+      "nickname": "The Great",
+      "weight_class": "Featherweight",
+      "nationality": "Australian",
+      "record": { "wins": 26, "losses": 3, "draws": 0 },
+      "stats": { "height": "5'6\"", "weight": "145 lbs", "reach": "71.5 in", "style": "Well-rounded" },
+      "image": "/fighters/volkanovski.png",
+      "attributes": [
+        { "skill": "Striking", "value": 94 },
+        { "skill": "Power", "value": 88 },
+        { "skill": "Speed", "value": 90 },
+        { "skill": "Grappling", "value": 92 },
+        { "skill": "Stamina", "value": 98 },
+        { "skill": "Chin", "value": 90 }
+      ],
+      "fight_history": [
+        { "opponent": "Ilia Topuria", "result": "Loss", "event": "UFC 298" },
+        { "opponent": "Yair Rodriguez", "result": "Win", "event": "UFC 290" },
+        { "opponent": "Islam Makhachev", "result": "Loss", "event": "UFC 284" },
+        { "opponent": "Max Holloway", "result": "Win", "event": "UFC 276" }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "UFC 300: Jones vs. Miocic",
+      "date": "2025-11-15",
+      "location": "Las Vegas, NV",
+      "main_card": [
+        { "match": "Jon Jones vs. Stipe Miocic", "weight_class": "Heavyweight" },
+        { "match": "Alexander Volkanovski vs. Ilia Topuria", "weight_class": "Featherweight" },
+        { "match": "Valentina Shevchenko vs. Alexa Grasso 2", "weight_class": "Women's Flyweight" }
+      ],
+      "image": "/events/ufc300.png"
+    },
+    {
+      "id": 2,
+      "name": "Canelo vs. Benavidez",
+      "date": "2025-09-20",
+      "location": "New York, NY",
+      "main_card": [
+        { "match": "Canelo Alvarez vs. David Benavidez", "weight_class": "Super Middleweight" }
+      ],
+      "image": "/events/canelo-benavidez.svg"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "McGregor vs. Poirier 4 in the Works?",
+      "source": "MMA Junkie",
+      "date": "2025-07-28",
+      "summary": "Rumors are swirling about a potential fourth fight between Conor McGregor and Dustin Poirier, with sources suggesting a possible winter showdown.",
+      "image": "/news/mcgregor-poirier.svg"
+    },
+    {
+      "id": 2,
+      "title": "Jones to Defend Heavyweight Title Against Miocic",
+      "source": "ESPN",
+      "date": "2025-07-25",
+      "summary": "The highly anticipated heavyweight title clash between Jon Jones and Stipe Miocic has been officially announced for UFC 300.",
+      "image": "/news/jones-miocic.svg"
+    },
+    {
+      "id": 3,
+      "title": "Canelo Alvarez Announces Next Fight",
+      "source": "Boxing Scene",
+      "date": "2025-07-22",
+      "summary": "Boxing superstar Canelo Alvarez has confirmed his next opponent will be David Benavidez in a super middleweight unification bout.",
+      "image": "/news/canelo-benavidez.svg"
+    },
+    {
+      "id": 4,
+      "title": "Adesanya Takes a Break from MMA",
+      "source": "MMA Fighting",
+      "date": "2025-08-01",
+      "summary": "Former middleweight champion Israel Adesanya has announced he will be taking an extended break from the sport, but promises to return.",
+      "image": "/news/adesanya-break.png"
+    },
+    {
+      "id": 5,
+      "title": "Volkanovski vs. Topuria Rematch in the Works",
+      "source": "UFC News",
+      "date": "2025-08-05",
+      "summary": "Sources say the UFC is targeting a rematch between Alexander Volkanovski and Ilia Topuria for the featherweight title later this year.",
+      "image": "/news/volk-topuria.png"
+    }
+  ],
+  "comments": [],
+  "users": [
+    {
+      "id": 1,
+      "email": "test@example.com",
+      "password": "password123",
+      "name": "Test User"
+    }
+  ]
+}
