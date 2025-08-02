@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://fight-companion.onrender.com' 
+  : 'http://localhost:3001';
 
 const handleResponse = async (response: Response) => {
   if (!response.ok) {

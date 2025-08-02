@@ -91,6 +91,33 @@ This project uses Vitest for unit and component testing. To run the test suite, 
 npm test
 ```
 
+## Deployment
+
+This application is configured for a two-part deployment: the mock API on Render and the frontend on Netlify.
+
+### 1. Deploying the Mock API
+
+The mock API is deployed as a "Web Service" on [Render.com](https://render.com).
+
+-   **Build Command:** `npm install`
+-   **Start Command:** `node server.js`
+
+Follow the instructions in the Render dashboard to connect your GitHub repository and deploy the service.
+
+### 2. Deploying the Frontend
+
+The frontend is deployed using [Netlify](https://www.netlify.com/).
+
+1.  **Commit and Push:** Make sure all your latest changes (including the `netlify.toml` file and the updated `api.ts`) are committed and pushed to your GitHub repository.
+2.  **Create a Netlify Account:** Sign up for a free account on Netlify, connecting it to your GitHub account.
+3.  **Create a New Site:**
+    *   Click "Add new site" -> "Import an existing project".
+    *   Connect to GitHub and select your `fight-companion` repository.
+4.  **Configure and Deploy:**
+    *   Netlify will automatically detect the `netlify.toml` file and use the correct build settings.
+    *   Click "Deploy site". Netlify will build and deploy your application.
+5.  **Done!** Your site will be live at a public URL provided by Netlify.
+
 ---
 
 This project was built with the assistance of a cutting-edge AI software engineering agent.
