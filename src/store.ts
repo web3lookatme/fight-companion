@@ -26,7 +26,87 @@ interface AppState {
   addComment: (comment: { postId: string; author: string; content: string }) => Promise<void>;
 }
 
-// ... (store implementation)
+export const useStore = create<AppState>((set, get) => ({
+  user: JSON.parse(sessionStorage.getItem('user') || 'null'),
+  isAuthenticated: !!sessionStorage.getItem('user'),
+  fighters: [],
+  events: [],
+  news: [],
+  comments: [],
+  loading: false,
+  error: null,
+  favoriteFighterIds: JSON.parse(localStorage.getItem('favoriteFighterIds') || '[]'),
+
+  login: async (credentials) => {
+    set({ loading: true, error: null });
+    try {
+      const users = await apiService.login(credentials);
+      if (users.length > 0) {
+        const user = users[0];
+        sessionStorage.setItem('user', JSON.stringify(user));
+        set({ user, isAuthenticated: true, loading: false });
+        toast.success(`Welcome back, ${user.name}!`);
+      } else {
+        throw new Error('Invalid email or password');
+      }
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+      toast.error((error as Error).message);
+    }
+  },
+
+  logout: () => {
+    sessionStorage.removeItem('user');
+    set({ user: null, isAuthenticated: false });
+    toast.success('Logged out successfully');
+  },
+
+  toggleFavorite: (id: number, name: string) => {
+    const { favoriteFighterIds } = get();
+    const isFavorite = favoriteFighterIds.includes(id);
+    const newFavorites = isFavorite
+      ? favoriteFighterIds.filter((favId) => favId !== id)
+      : [...favoriteFighterIds, id];
+    
+    localStorage.setItem('favoriteFighterIds', JSON.stringify(newFavorites));
+    set({ favoriteFighterIds: newFavorites });
+
+    if (isFavorite) {
+      toast.error(`${name} removed from favorites`);
+    } else {
+      toast.success(`${name} added to favorites!`);
+    }
+  },
+
+  fetchFighters: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await apiService.getFighters();
+      set({ fighters: data, loading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
+  },
+
+  fetchEvents: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await apiService.getEvents();
+      set({ events: data, loading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
+  },
+
+  fetchNews: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await apiService.getNews();
+      set({ news: data, loading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
+  },
 
   fetchFighterById: async (id: string) => {
     set({ loading: true, error: null });
