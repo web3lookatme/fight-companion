@@ -81,7 +81,7 @@ const Home: React.FC = () => {
         {/* Latest News */}
         <section>
           <SectionHeader title="Latest" accent="News" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {news.map(article => (
               <Link to={`/news/${article.id}`} className="block bg-charcoal rounded-lg shadow-lg overflow-hidden group">
                 <div className="relative">
