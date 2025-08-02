@@ -1,8 +1,8 @@
 {
   "name": "temp-fight-companion",
   "private": true,
-  "version": "1.0.0",
-  "description": "The ultimate destination for fight fans.",
+  "version": "1.0.1",
+  "description": "A feature-rich web application for fight fans.",
   "type": "module",
   "scripts": {
     "dev": "vite",
