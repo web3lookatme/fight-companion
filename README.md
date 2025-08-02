@@ -91,6 +91,18 @@ This project uses Vitest for unit and component testing. To run the test suite, 
 npm test
 ```
 
+### Running End-to-End Tests
+
+This project uses Cypress for End-to-End testing. To run the E2E tests, you need to have both the development server and the mock API server running.
+
+1.  **Start the mock API:** `npm run api`
+2.  **Start the development server:** `npm run dev`
+3.  **Open Cypress:** In a third terminal, run `npm run cypress:open`
+
+This will open the Cypress Test Runner, where you can execute the E2E tests.
+
+---
+
 ## Deployment
 
 This application is configured for a two-part deployment: the mock API on Render and the frontend on Netlify.

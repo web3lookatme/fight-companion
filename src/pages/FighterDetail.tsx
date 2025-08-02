@@ -9,26 +9,33 @@ import Spinner from '../components/ui/Spinner';
 import FighterTaleOfTheTape from '../components/fighters/FighterTaleOfTheTape';
 import FighterFightHistory from '../components/fighters/FighterFightHistory';
 import FighterRadarChart from '../components/fighters/FighterRadarChart';
-import ComparisonBarChart from '../components/fighters/ComparisonBarChart';
+import ComparisonRadarChart from '../components/fighters/ComparisonRadarChart';
+import SectionHeader from '../components/ui/SectionHeader';
+import FighterCard from '../components/fighters/FighterCard';
 
 const FighterDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { fighters, favoriteFighterIds, toggleFavorite, fetchFighters, fetchFighterById, loading, error } = useStore();
   const [fighter, setFighter] = useState<Fighter | null>(null);
   const [opponent, setOpponent] = useState<Fighter | null>(null);
+  const [relatedFighters, setRelatedFighters] = useState<Fighter[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
       if (id) {
         const currentFighter = await fetchFighterById(id);
         setFighter(currentFighter || null);
+        if (currentFighter && fighters.length > 0) {
+          const related = fighters.filter(f => f.weight_class === currentFighter.weight_class && f.id !== currentFighter.id).slice(0, 4);
+          setRelatedFighters(related);
+        }
       }
       if (fighters.length === 0) {
         fetchFighters();
       }
     };
     loadData();
-  }, [id, fetchFighterById, fighters.length, fetchFighters]);
+  }, [id, fetchFighterById, fighters, fetchFighters]);
 
   const handleOpponentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const opponentId = parseInt(e.target.value);
@@ -36,7 +43,7 @@ const FighterDetail: React.FC = () => {
     setOpponent(selectedOpponent);
   };
 
-  if (loading) return <Spinner />;
+  if (loading && !fighter) return <Spinner />;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!fighter) return <div className="text-white text-center text-4xl py-20">Fighter not found.</div>;
 
@@ -75,29 +82,27 @@ const FighterDetail: React.FC = () => {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Left Column */}
           <div className="lg:col-span-1 space-y-12">
             <FighterTaleOfTheTape fighter={fighter} />
             <div className="bg-charcoal p-8 rounded-lg shadow-xl">
               <h2 className="text-4xl text-gold font-bold border-b-2 border-gold/20 pb-3 mb-6 uppercase tracking-widest">Head-to-Head</h2>
               <select onChange={handleOpponentSelect} className="bg-onyx border border-gold/50 text-white text-lg rounded-lg p-3 w-full focus:ring-2 focus:ring-gold focus:outline-none">
                 <option value="">Select Opponent</option>
-                {fighters.filter((f: Fighter) => f.id !== fighter.id).map((f: Fighter) => <option key={f.id} value={f.id}>{f.name}</option>)}
+                {fighters.filter(f => f.id !== fighter.id).map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
               </select>
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="lg:col-span-2 space-y-12">
             <AnimatePresence mode="wait">
               {opponent ? (
                 <motion.div key="comparison" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
                   <div className="bg-charcoal rounded-lg shadow-2xl shadow-black/40 p-8">
                     <div className="text-center mb-6">
-                      <h2 className="text-4xl text-gold font-bold border-b-2 border-gold/20 pb-3 mb-6 uppercase tracking-widest">Head-to-Head</h2>
+                      <h2 className="text-4xl text-gold font-bold border-b-2 border-gold/20 pb-3 mb-6 uppercase tracking-widest">Attribute Comparison</h2>
                       <p className="text-3xl text-white uppercase font-bold">{fighter.name} <span className="text-gold">VS</span> {opponent.name}</p>
                     </div>
-                    <ComparisonBarChart fighter1={fighter} fighter2={opponent} />
+                    <ComparisonRadarChart fighter1={fighter} fighter2={opponent} />
                   </div>
                 </motion.div>
               ) : (
@@ -114,6 +119,17 @@ const FighterDetail: React.FC = () => {
             </AnimatePresence>
           </div>
         </div>
+
+        {relatedFighters.length > 0 && (
+          <section className="mt-24">
+            <SectionHeader title="Related" accent="Fighters" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {relatedFighters.map(relatedFighter => (
+                <FighterCard key={relatedFighter.id} fighter={relatedFighter} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </AnimatedPage>
   );

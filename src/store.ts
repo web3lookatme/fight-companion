@@ -1,30 +1,38 @@
 import { create } from 'zustand';
 import toast from 'react-hot-toast';
-import { apiService } from './api';
+import { apiService } from './api-supabase';
 import type { Fighter, Event, News, Comment, User } from './types';
 
-interface AppState {
-  user: User | null;
-  isAuthenticated: boolean;
-  fighters: Fighter[];
-  events: Event[];
-  news: News[];
-  comments: Comment[];
-  loading: boolean;
-  error: string | null;
-  favoriteFighterIds: number[];
-  login: (credentials: { email: string; pass: string }) => Promise<void>;
-  logout: () => void;
-  toggleFavorite: (id: number, name: string) => void;
-  fetchFighters: () => Promise<void>;
-  fetchEvents: () => Promise<void>;
-  fetchNews: () => Promise<void>;
-  fetchFighterById: (id: string) => Promise<Fighter | undefined>;
-  fetchEventById: (id: string) => Promise<Event | undefined>;
-  fetchNewsById: (id: string) => Promise<News | undefined>;
-  fetchComments: (postId: string) => Promise<void>;
-  addComment: (comment: { postId: string; author: string; content: string }) => Promise<void>;
-}
+// ... (AppState interface remains the same)
+
+const reducer = (state: AppState, action: any): Partial<AppState> => {
+  switch (action.type) {
+    case 'SET_LOADING':
+      return { loading: action.payload };
+    case 'SET_ERROR':
+      return { error: action.payload, loading: false };
+    case 'SET_FIGHTERS':
+      return { fighters: action.payload, loading: false };
+    case 'SET_EVENTS':
+      return { events: action.payload, loading: false };
+    case 'SET_NEWS':
+      return { news: action.payload, loading: false };
+    case 'SET_COMMENTS':
+      return { comments: action.payload, loading: false };
+    case 'ADD_COMMENT':
+      return { comments: [...state.comments, action.payload] };
+    case 'SET_USER':
+      return { user: action.payload, isAuthenticated: !!action.payload, loading: false };
+    case 'LOGOUT':
+      return { user: null, isAuthenticated: false };
+    case 'SET_FAVORITES':
+      return { favoriteFighterIds: action.payload };
+    default:
+      return state;
+  }
+};
+
+const dispatch = (action: any) => useStore.setState(state => reducer(state, action));
 
 export const useStore = create<AppState>((set, get) => ({
   user: JSON.parse(sessionStorage.getItem('user') || 'null'),
@@ -38,129 +46,53 @@ export const useStore = create<AppState>((set, get) => ({
   favoriteFighterIds: JSON.parse(localStorage.getItem('favoriteFighterIds') || '[]'),
 
   login: async (credentials) => {
-    set({ loading: true, error: null });
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const users = await apiService.login(credentials);
       if (users.length > 0) {
         const user = users[0];
         sessionStorage.setItem('user', JSON.stringify(user));
-        set({ user, isAuthenticated: true, loading: false });
+        dispatch({ type: 'SET_USER', payload: user });
         toast.success(`Welcome back, ${user.name}!`);
       } else {
         throw new Error('Invalid email or password');
       }
     } catch (error) {
-      set({ error: (error as Error).message, loading: false });
+      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
       toast.error((error as Error).message);
     }
   },
 
+  logout: () => void;
+  clearFavorites: () => void;
+  toggleFavorite: (id: number, name: string) => void;
+  fetchFighters: () => Promise<void>;
+  fetchEvents: () => Promise<void>;
+  fetchNews: () => Promise<void>;
+  fetchFighterById: (id: string) => Promise<Fighter | undefined>;
+  fetchEventById: (id: string) => Promise<Event | undefined>;
+  fetchNewsById: (id: string) => Promise<News | undefined>;
+  fetchComments: (postId: string) => Promise<void>;
+  addComment: (comment: { postId: string; author: string; content: string }) => Promise<void>;
+}
+
+export const useStore = create<AppState>((set, get) => ({
+  // ... (initial state remains the same)
+
   logout: () => {
     sessionStorage.removeItem('user');
-    set({ user: null, isAuthenticated: false });
+    dispatch({ type: 'LOGOUT' });
     toast.success('Logged out successfully');
   },
 
+  clearFavorites: () => {
+    localStorage.removeItem('favoriteFighterIds');
+    dispatch({ type: 'SET_FAVORITES', payload: [] });
+    toast.success('Favorites cleared');
+  },
+
   toggleFavorite: (id: number, name: string) => {
-    const { favoriteFighterIds } = get();
-    const isFavorite = favoriteFighterIds.includes(id);
-    const newFavorites = isFavorite
-      ? favoriteFighterIds.filter((favId) => favId !== id)
-      : [...favoriteFighterIds, id];
-    
-    localStorage.setItem('favoriteFighterIds', JSON.stringify(newFavorites));
-    set({ favoriteFighterIds: newFavorites });
-
-    if (isFavorite) {
-      toast.error(`${name} removed from favorites`);
-    } else {
-      toast.success(`${name} added to favorites!`);
-    }
+    // ... (toggleFavorite remains the same)
   },
-
-  fetchFighters: async () => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getFighters();
-      set({ fighters: data, loading: false });
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-    }
-  },
-
-  fetchEvents: async () => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getEvents();
-      set({ events: data, loading: false });
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-    }
-  },
-
-  fetchNews: async () => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getNews();
-      set({ news: data, loading: false });
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-    }
-  },
-
-  fetchFighterById: async (id: string) => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getFighterById(id);
-      set({ loading: false });
-      return data;
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-      return undefined;
-    }
-  },
-
-  fetchEventById: async (id: string) => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getEventById(id);
-      set({ loading: false });
-      return data;
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-      return undefined;
-    }
-  },
-
-  fetchNewsById: async (id: string) => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getNewsById(id);
-      set({ loading: false });
-      return data;
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-      return undefined;
-    }
-  },
-
-  fetchComments: async (postId: string) => {
-    set({ loading: true, error: null });
-    try {
-      const data = await apiService.getComments(postId);
-      set({ comments: data, loading: false });
-    } catch (error) {
-      set({ error: (error as Error).message, loading: false });
-    }
-  },
-
-  addComment: async (comment: { postId: string; author: string; content: string }) => {
-    try {
-      const newComment = await apiService.postComment(comment);
-      set((state) => ({ comments: [...state.comments, newComment] }));
-      toast.success('Comment posted successfully!');
-    } catch (error) {
-      toast.error('Failed to post comment.');
-    }
-  },
+  // ... (other actions remain the same)
 }));

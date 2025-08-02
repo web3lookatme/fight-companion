@@ -4,11 +4,10 @@ import type { Fighter, Event, News } from '../types';
 import FighterCard from '../components/fighters/FighterCard';
 import AnimatedPage from '../components/motion/AnimatedPage';
 import Spinner from '../components/ui/Spinner';
-
 import SectionHeader from '../components/ui/SectionHeader';
 
 const Home: React.FC = () => {
-  const [fighters, setFighters] = useState<Fighter[]>([]);
+  const [featuredFighter, setFeaturedFighter] = useState<Fighter | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,14 +16,19 @@ const Home: React.FC = () => {
     const fetchData = async () => {
       try {
         const [fightersRes, eventsRes, newsRes] = await Promise.all([
-          fetch('http://localhost:3001/fighters?_limit=4'),
+          fetch('http://localhost:3001/fighters'),
           fetch('http://localhost:3001/events?_limit=1'),
           fetch('http://localhost:3001/news?_limit=3')
         ]);
         const fightersData = await fightersRes.json();
         const eventsData = await eventsRes.json();
         const newsData = await newsRes.json();
-        setFighters(fightersData);
+        
+        if (fightersData.length > 0) {
+          const randomIndex = Math.floor(Math.random() * fightersData.length);
+          setFeaturedFighter(fightersData[randomIndex]);
+        }
+        
         setEvents(eventsData);
         setNews(newsData);
       } catch (error) {
@@ -68,15 +72,17 @@ const Home: React.FC = () => {
           </section>
         )}
 
-        {/* Top Fighters */}
-        <section>
-          <SectionHeader title="Top" accent="Fighters" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {fighters.map(fighter => (
-              <FighterCard key={fighter.id} fighter={fighter} />
-            ))}
-          </div>
-        </section>
+        {/* Featured Fighter */}
+        {featuredFighter && (
+          <section>
+            <SectionHeader title="Featured" accent="Fighter" />
+            <div className="flex justify-center">
+              <div className="w-full md:w-2/3 lg:w-1/2">
+                <FighterCard fighter={featuredFighter} />
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Latest News */}
         <section>

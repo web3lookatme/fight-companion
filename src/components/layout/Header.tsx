@@ -23,7 +23,7 @@ const Header: React.FC = () => {
   );
 
   return (
-    <header className="bg-charcoal/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gold/10">
+    <header className="bg-charcoal/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gold/10 shadow-lg shadow-black/20">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <h1 className="text-3xl md:text-4xl font-bold tracking-wider uppercase">
           <NavLink to="/" className="text-white hover:text-gold transition-colors">Fight <span className="text-gold">Companion</span></NavLink>

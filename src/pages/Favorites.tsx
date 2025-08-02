@@ -24,7 +24,7 @@ const itemVariants = {
 };
 
 const Favorites: React.FC = () => {
-  const { fighters, favoriteFighterIds, loading, error, fetchFighters } = useStore();
+  const { fighters, favoriteFighterIds, loading, error, fetchFighters, clearFavorites } = useStore();
 
   useEffect(() => {
     if (fighters.length === 0) {
@@ -40,7 +40,14 @@ const Favorites: React.FC = () => {
   return (
     <AnimatedPage>
       <div>
-        <h1 className="text-6xl text-white tracking-wider mb-4 uppercase font-bold">Favorite <span className="text-gold">Fighters</span></h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-6xl text-white tracking-wider uppercase font-bold">Favorite <span className="text-gold">Fighters</span></h1>
+          {favoriteFighters.length > 0 && (
+            <button onClick={clearFavorites} className="bg-red-600 text-white font-bold py-2 px-4 rounded-lg uppercase text-sm hover:bg-red-700 transition-colors">
+              Clear All
+            </button>
+          )}
+        </div>
         <p className="text-lg text-medium-gray mb-12">Your handpicked roster of top fighters.</p>
         
         {favoriteFighters.length > 0 ? (
