@@ -27,35 +27,6 @@ interface AppState {
   addComment: (comment: { postId: string; author: string; content: string }) => Promise<void>;
 }
 
-const reducer = (state: AppState, action: { type: string; payload?: any }): Partial<AppState> => {
-  switch (action.type) {
-    case 'SET_LOADING':
-      return { loading: action.payload };
-    case 'SET_ERROR':
-      return { error: action.payload, loading: false };
-    case 'SET_FIGHTERS':
-      return { fighters: action.payload, loading: false };
-    case 'SET_EVENTS':
-      return { events: action.payload, loading: false };
-    case 'SET_NEWS':
-      return { news: action.payload, loading: false };
-    case 'SET_COMMENTS':
-      return { comments: action.payload, loading: false };
-    case 'ADD_COMMENT':
-      return { comments: [...state.comments, action.payload] };
-    case 'SET_USER':
-      return { user: action.payload, isAuthenticated: !!action.payload, loading: false };
-    case 'LOGOUT':
-      return { user: null, isAuthenticated: false };
-    case 'SET_FAVORITES':
-      return { favoriteFighterIds: action.payload };
-    default:
-      return state;
-  }
-};
-
-const dispatch = (action: { type: string; payload?: any }) => useStore.setState(state => reducer(state, action));
-
 export const useStore = create<AppState>((set, get) => ({
   user: JSON.parse(sessionStorage.getItem('user') || 'null'),
   isAuthenticated: !!sessionStorage.getItem('user'),
@@ -68,32 +39,32 @@ export const useStore = create<AppState>((set, get) => ({
   favoriteFighterIds: JSON.parse(localStorage.getItem('favoriteFighterIds') || '[]'),
 
   login: async (credentials) => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const users = await apiService.login(credentials);
       if (users.length > 0) {
         const user = users[0];
         sessionStorage.setItem('user', JSON.stringify(user));
-        dispatch({ type: 'SET_USER', payload: user });
+        set({ user, isAuthenticated: true, loading: false });
         toast.success(`Welcome back, ${user.name}!`);
       } else {
         throw new Error('Invalid email or password');
       }
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
       toast.error((error as Error).message);
     }
   },
 
   logout: () => {
     sessionStorage.removeItem('user');
-    dispatch({ type: 'LOGOUT' });
+    set({ user: null, isAuthenticated: false });
     toast.success('Logged out successfully');
   },
 
   clearFavorites: () => {
     localStorage.removeItem('favoriteFighterIds');
-    dispatch({ type: 'SET_FAVORITES', payload: [] });
+    set({ favoriteFighterIds: [] });
     toast.success('Favorites cleared');
   },
 
@@ -105,7 +76,7 @@ export const useStore = create<AppState>((set, get) => ({
       : [...favoriteFighterIds, id];
     
     localStorage.setItem('favoriteFighterIds', JSON.stringify(newFavorites));
-    dispatch({ type: 'SET_FAVORITES', payload: newFavorites });
+    set({ favoriteFighterIds: newFavorites });
 
     if (isFavorite) {
       toast.error(`${name} removed from favorites`);
@@ -115,85 +86,85 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   fetchFighters: async () => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getFighters();
-      dispatch({ type: 'SET_FIGHTERS', payload: data });
+      set({ fighters: data, loading: false });
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
     }
   },
 
   fetchEvents: async () => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getEvents();
-      dispatch({ type: 'SET_EVENTS', payload: data });
+      set({ events: data, loading: false });
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
     }
   },
 
   fetchNews: async () => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getNews();
-      dispatch({ type: 'SET_NEWS', payload: data });
+      set({ news: data, loading: false });
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
     }
   },
 
   fetchFighterById: async (id: string) => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getFighterById(id);
-      dispatch({ type: 'SET_LOADING', payload: false });
+      set({ loading: false });
       return data;
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
       return undefined;
     }
   },
 
   fetchEventById: async (id: string) => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getEventById(id);
-      dispatch({ type: 'SET_LOADING', payload: false });
+      set({ loading: false });
       return data;
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
       return undefined;
     }
   },
 
   fetchNewsById: async (id: string) => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getNewsById(id);
-      dispatch({ type: 'SET_LOADING', payload: false });
+      set({ loading: false });
       return data;
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
       return undefined;
     }
   },
 
   fetchComments: async (postId: string) => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    set({ loading: true, error: null });
     try {
       const data = await apiService.getComments(postId);
-      dispatch({ type: 'SET_COMMENTS', payload: data });
+      set({ comments: data, loading: false });
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: (error as Error).message });
+      set({ error: (error as Error).message, loading: false });
     }
   },
 
   addComment: async (comment: { postId: string; author: string; content: string }) => {
     try {
       const newComment = await apiService.postComment(comment);
-      dispatch({ type: 'ADD_COMMENT', payload: newComment });
+      set((state) => ({ comments: [...state.comments, newComment] }));
       toast.success('Comment posted successfully!');
     } catch (error) {
       toast.error('Failed to post comment.');

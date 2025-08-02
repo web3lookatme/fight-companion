@@ -1,6 +1,6 @@
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import type { Fighter } from '../types';
+import type { Fighter } from '../../types';
 
 interface ComparisonRadarChartProps {
   fighter1: Fighter;
@@ -8,7 +8,7 @@ interface ComparisonRadarChartProps {
 }
 
 const ComparisonRadarChart: React.FC<ComparisonRadarChartProps> = ({ fighter1, fighter2 }) => {
-  const data = fighter1.attributes!.map((attr, index) => ({
+  const data = fighter1.attributes!.map((attr: { skill: string; value: number }, index: number) => ({
     skill: attr.skill,
     [fighter1.name]: attr.value,
     [fighter2.name]: fighter2.attributes![index].value,

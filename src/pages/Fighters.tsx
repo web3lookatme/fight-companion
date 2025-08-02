@@ -24,8 +24,6 @@ const itemVariants = {
   },
 };
 
-// ... (imports remain the same)
-
 const Fighters: React.FC = () => {
   const { fighters, loading, error, fetchFighters } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +55,10 @@ const Fighters: React.FC = () => {
       });
   }, [fighters, searchTerm, weightClass, sortBy]);
 
-  // ... (weightClasses remains the same)
+  const weightClasses = useMemo(() => {
+    const classes = new Set(fighters.map(f => f.weight_class));
+    return Array.from(classes);
+  }, [fighters]);
 
   return (
     <AnimatedPage>
@@ -88,21 +89,31 @@ const Fighters: React.FC = () => {
           </select>
         </div>
 
-        {/* ... (loading and error handling remains the same) */}
-        
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* ... (skeleton and no results logic remains the same) */}
-          {sortedAndFilteredFighters.map((fighter: Fighter) => (
-            <motion.div key={fighter.id} variants={itemVariants}>
-              <FighterCard fighter={fighter} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {error && <p className="text-center text-red-500">{error}</p>}
+        {!error && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {loading ? (
+              Array.from({ length: 8 }).map((_, index) => (
+                <FighterCardSkeleton key={index} />
+              ))
+            ) : (
+              sortedAndFilteredFighters.length > 0 ? (
+                sortedAndFilteredFighters.map((fighter: Fighter) => (
+                  <motion.div key={fighter.id} variants={itemVariants}>
+                    <FighterCard fighter={fighter} />
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-center text-lg text-medium-gray col-span-full">No fighters found matching your criteria.</p>
+              )
+            )}
+          </motion.div>
+        )}
       </div>
     </AnimatedPage>
   );
