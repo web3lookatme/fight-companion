@@ -90,27 +90,19 @@ const Home: React.FC = () => {
           </motion.section>
         )}
 
+        import FighterCarousel from '../components/fighters/FighterCarousel';
+
+// ... (imports and component start)
+
         {/* Featured Fighters */}
         {featuredFighters.length > 0 && (
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-          >
+          <section>
             <SectionHeader title="Featured" accent="Fighters" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredFighters.map((fighter: Fighter) => (
-                <motion.div
-                  key={fighter.id}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                >
-                  <FighterCard fighter={fighter} />
-                </motion.div>
-              ))}
-            </div>
-          </motion.section>
+            <FighterCarousel fighters={featuredFighters} />
+          </section>
         )}
+
+// ... (rest of the component)
 
         {/* Latest News */}
         <motion.section
