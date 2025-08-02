@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import toast from 'react-hot-toast';
-import { apiService } from './api-supabase';
+import { apiService } from './api';
 import type { Fighter, Event, News, Comment, User } from './types';
 
 interface AppState {
