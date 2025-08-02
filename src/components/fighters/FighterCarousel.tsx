@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-import { Fighter } from '../../types';
+import type { Fighter } from '../../types';
 import FighterCard from './FighterCard';
 import { motion } from 'framer-motion';
 

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../store';
-import type { Fighter } from '../types';
-import FighterCard from '../components/fighters/FighterCard';
+import FighterCarousel from '../components/fighters/FighterCarousel';
 import AnimatedPage from '../components/motion/AnimatedPage';
 import Spinner from '../components/ui/Spinner';
 import SectionHeader from '../components/ui/SectionHeader';
