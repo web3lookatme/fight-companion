@@ -89,10 +89,6 @@ const Home: React.FC = () => {
           </motion.section>
         )}
 
-        import FighterCarousel from '../components/fighters/FighterCarousel';
-
-// ... (imports and component start)
-
         {/* Featured Fighters */}
         {featuredFighters.length > 0 && (
           <section>
@@ -100,8 +96,6 @@ const Home: React.FC = () => {
             <FighterCarousel fighters={featuredFighters} />
           </section>
         )}
-
-// ... (rest of the component)
 
         {/* Latest News */}
         <motion.section
