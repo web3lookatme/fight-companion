@@ -9,32 +9,21 @@ import CommentList from '../components/comments/CommentList';
 
 const NewsDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { fetchComments } = useStore();
+  const { fetchNewsById, fetchComments, loading, error } = useStore();
   const [article, setArticle] = useState<News | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchArticleAndComments = async () => {
-      if (!id) return;
-      setLoading(true);
-      try {
-        const response = await fetch(`http://localhost:3001/news/${id}`);
-        if (!response.ok) throw new Error('Failed to fetch news article');
-        const data = await response.json();
-        setArticle(data);
+    const loadData = async () => {
+      if (id) {
+        const currentArticle = await fetchNewsById(id);
+        setArticle(currentArticle || null);
         await fetchComments(`news-${id}`);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
       }
     };
+    loadData();
+  }, [id, fetchNewsById, fetchComments]);
 
-    fetchArticleAndComments();
-  }, [id, fetchComments]);
-
-  if (loading) return <Spinner />;
+  if (loading && !article) return <Spinner />;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!article) return <div className="text-white text-center text-4xl py-20">Article not found.</div>;
 

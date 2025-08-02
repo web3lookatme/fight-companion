@@ -11,7 +11,9 @@ export const apiService = {
   getFighters: () => fetch(`${API_BASE_URL}/fighters`).then(handleResponse),
   getFighterById: (id: string) => fetch(`${API_BASE_URL}/fighters/${id}`).then(handleResponse),
   getEvents: () => fetch(`${API_BASE_URL}/events`).then(handleResponse),
+  getEventById: (id: string) => fetch(`${API_BASE_URL}/events/${id}`).then(handleResponse),
   getNews: () => fetch(`${API_BASE_URL}/news`).then(handleResponse),
+  getNewsById: (id: string) => fetch(`${API_BASE_URL}/news/${id}`).then(handleResponse),
   getComments: (postId: string) => fetch(`${API_BASE_URL}/comments?postId=${postId}`).then(handleResponse),
   postComment: (comment: { postId: string; author: string; content: string }) => {
     return fetch(`${API_BASE_URL}/comments`, {

@@ -9,40 +9,29 @@ import CommentList from '../components/comments/CommentList';
 
 const EventDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { fighters, fetchFighters, fetchComments } = useStore();
+  const { fighters, fetchFighters, fetchEventById, fetchComments, loading, error } = useStore();
   const [event, setEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchEventAndComments = async () => {
-      if (!id) return;
-      setLoading(true);
-      try {
-        const response = await fetch(`http://localhost:3001/events/${id}`);
-        if (!response.ok) throw new Error('Failed to fetch event details');
-        const data = await response.json();
-        setEvent(data);
+    const loadData = async () => {
+      if (id) {
+        const currentEvent = await fetchEventById(id);
+        setEvent(currentEvent || null);
         await fetchComments(`event-${id}`);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
+      }
+      if (fighters.length === 0) {
+        fetchFighters();
       }
     };
-
-    fetchEventAndComments();
-    if (fighters.length === 0) {
-      fetchFighters();
-    }
-  }, [id, fighters.length, fetchFighters, fetchComments]);
+    loadData();
+  }, [id, fetchEventById, fetchComments, fighters.length, fetchFighters]);
 
   const getFighterId = (fighterName: string): number | undefined => {
     const fighter = fighters.find((f: Fighter) => f.name === fighterName);
     return fighter?.id;
   };
 
-  if (loading) return <Spinner />;
+  if (loading && !event) return <Spinner />;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!event) return <div className="text-white text-center text-4xl py-20">Event not found.</div>;
 
